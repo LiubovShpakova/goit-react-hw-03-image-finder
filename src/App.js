@@ -30,6 +30,7 @@ class App extends Component {
       searchQuery: query,
       currentPage: 1,
       images: [],
+      alt: [],
       error: null,
     });
   };
@@ -55,9 +56,9 @@ class App extends Component {
       .finally(() => this.setState({ isLoading: false }));
   };
   openImg = (images) => {
-    this.setState({ largeImage: images.largeImageURL, alt: images.tags });
-    console.log(this.state.largeImage);
-
+    this.setState({ largeImage: images.largeImageURL });
+    this.setState({ alt: images.tags });
+    
     this.toggleModal();
   };
   toggleModal = () => {

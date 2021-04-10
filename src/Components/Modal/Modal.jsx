@@ -24,8 +24,6 @@ export default class Modal extends Component {
   };
 
   render() {
-    console.log(this.props.src);
-    console.log(this.props.alt);
     return createPortal(
       <div className="Overlay" onClick={this.handleBackdropClick}>
         <div className="Modal">
