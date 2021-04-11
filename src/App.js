@@ -25,6 +25,10 @@ class App extends Component {
     if (prevState.searchQuery !== this.state.searchQuery) {
       this.onFetchImages();
     }
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: "smooth",
+    });
   }
 
   onSearchImages = (query) => {
@@ -50,16 +54,11 @@ class App extends Component {
             }),
           });
         }
-
         this.setState((prevState) => ({
           images: [...prevState.images, ...images],
           currentPage: prevState.currentPage + 1,
           error: null,
         }));
-        window.scrollTo({
-          top: document.documentElement.scrollHeight,
-          behavior: "smooth",
-        });
       })
       .catch((error) =>
         this.setState({
