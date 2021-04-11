@@ -135,8 +135,6 @@ img {
   margin-right: auto;
 }
 
-
-
 /*
  * Стили компонента Modal
  */
@@ -157,4 +155,9 @@ img {
 .Modal {
   max-width: calc(100vw - 48px);
   max-height: calc(100vh - 24px);
+}
+.error_toast {
+  background: red;
+  font-size: 18px;
+  color: white;
 }

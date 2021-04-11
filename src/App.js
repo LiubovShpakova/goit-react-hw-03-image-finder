@@ -6,6 +6,8 @@ import ImageGalleryItem from "./Components/ImageGalleryItem/ImageGalleryItem";
 import Spinner from "./Components/Loader/Loader";
 import Modal from "./Components/Modal/Modal";
 import Searchbar from "./Components/Searchbar/Searchbar";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 
 class App extends Component {
@@ -34,31 +36,44 @@ class App extends Component {
       error: null,
     });
   };
-  onFetchImages = () => {
-    const { currentPage, searchQuery } = this.state;
-    const options = { searchQuery, currentPage };
 
+  onFetchImages = () => {
     this.setState({ isLoading: true });
 
-    fetchImages(options)
+    fetchImages(this.state.searchQuery, this.state.currentPage)
       .then((images) => {
         console.log(images);
+        if (images.length === 0) {
+          return this.setState({
+            error: toast("Something went wrong", {
+              className: "error_toast",
+            }),
+          });
+        }
+
         this.setState((prevState) => ({
           images: [...prevState.images, ...images],
           currentPage: prevState.currentPage + 1,
+          error: null,
         }));
         window.scrollTo({
           top: document.documentElement.scrollHeight,
           behavior: "smooth",
         });
       })
-      .catch((error) => this.setState({ error }))
+      .catch((error) =>
+        this.setState({
+          error: toast("Something went wrong", {
+            className: "error_toast",
+          }),
+        })
+      )
       .finally(() => this.setState({ isLoading: false }));
   };
   openImg = (images) => {
     this.setState({ largeImage: images.largeImageURL });
     this.setState({ alt: images.tags });
-    
+
     this.toggleModal();
   };
   toggleModal = () => {
@@ -68,7 +83,7 @@ class App extends Component {
   };
 
   render() {
-    const { images, isLoading, largeImage, alt, showModal, error } = this.state;
+    const { images, isLoading, largeImage, alt, showModal } = this.state;
 
     const shouldRenderLoadMoreButton = images.length > 0 && !isLoading;
     return (
@@ -83,7 +98,7 @@ class App extends Component {
         {showModal && (
           <Modal onClose={this.toggleModal} src={largeImage} alt={alt}></Modal>
         )}
-        {error && <p className="Error">{error}</p>}
+        <ToastContainer autoClose={3000} />
       </div>
     );
   }
