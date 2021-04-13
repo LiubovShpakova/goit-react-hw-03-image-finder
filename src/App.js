@@ -25,10 +25,6 @@ class App extends Component {
     if (prevState.searchQuery !== this.state.searchQuery) {
       this.onFetchImages();
     }
-    window.scrollTo({
-      top: document.documentElement.scrollHeight,
-      behavior: "smooth",
-    });
   }
 
   onSearchImages = (query) => {
@@ -59,6 +55,9 @@ class App extends Component {
           currentPage: prevState.currentPage + 1,
           error: null,
         }));
+        if (this.state.currentPage > 2) {
+          this.Scroll();
+        }
       })
       .catch((error) =>
         this.setState({
@@ -68,6 +67,12 @@ class App extends Component {
         })
       )
       .finally(() => this.setState({ isLoading: false }));
+  };
+  Scroll = () => {
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: "smooth",
+    });
   };
   openImg = (images) => {
     this.setState({ largeImage: images.largeImageURL });
